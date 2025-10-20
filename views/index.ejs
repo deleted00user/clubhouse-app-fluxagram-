@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            🏛️ Fluxagram
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/" class="btn btn-secondary">🏠 Home</a>
+            
+            <% if (user) { %>
+                <a href="/create-message" class="btn btn-primary">✍️ New Message</a>
+                
+                <% if (!user.membershipstatus && !user.admin) { %>
+                    <a href="/join-club" class="btn btn-secondary">🔐 Join Club</a>
+                <% } %>
+                
+                <% if (!user.admin) { %>
+                    <a href="/become-admin" class="btn btn-secondary">⚡ Become Admin</a>
+                <% } %>
+                
+                <div class="sidebar-divider"></div>
+                
+                <a href="/logout" class="btn btn-secondary">🚪 Logout</a>
+            <% } else { %>
+                <a href="/login" class="btn btn-primary">🔑 Login</a>
+                <a href="/sign-up" class="btn btn-secondary">📝 Sign Up</a>
+            <% } %>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <% if (user) { %>
+                <p>👤 <%= user.firstname %></p>
+                <% if (user.membershipstatus) { %>
+                    <p style="color: #667eea;">✓ Member</p>
+                <% } %>
+                <% if (user.admin) { %>
+                    <p style="color: #e74c3c;">⚡ Admin</p>
+                <% } %>
+            <% } else { %>
+                <p>Anonymous Visitor</p>
+            <% } %>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <% if (user) { %>
+            <div class="welcome-section">
+                <h2>Welcome back, <%= user.firstname %>! 👋</h2>
+            </div>
+        <% } %>
+
+        <div class="container">
+            <div class="messages-container">
+                <% if (messages.length === 0) { %>
+                    <div class="empty-state">
+                        <h2>No messages yet</h2>
+                        <p>Be the first to share something with the club!</p>
+                    </div>
+                <% } else { %>
+                    <% messages.forEach(message => { %>
+                        <article class="message-card">
+                            <h3><%= message.title %></h3>
+                            <p><%= message.text %></p>
+                            
+                            <% if(user && (user.membershipstatus || user.admin)) { %>
+                                <div class="message-meta">
+                                    <span class="message-author">
+                                        👤 <%= message.firstname %> <%= message.lastname %>
+                                    </span>
+                                    <span class="message-date">
+                                        🕒 <%= new Date(message.timestamp).toLocaleString('en-GB', { 
+                                            hour: '2-digit', 
+                                            minute: '2-digit',
+                                            day: 'numeric', 
+                                            month: 'long',
+                                            year: 'numeric'
+                                        }) %>
+                                    </span>
+                                </div>
+                            <% } %>
+                            
+                            <% if(user && user.admin) { %>
+                                <div class="message-actions">
+                                    <form action="/delete-message/<%= message.id %>" method="POST">
+                                        <button type="submit" class="btn btn-danger">🗑️ Delete</button>
+                                    </form>
+                                </div>
+                            <% } %>  
+                        </article>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

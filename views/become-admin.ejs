@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become Admin</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1>⚡ Become Admin</h1>
+        <p style="text-align: center; color: #7f8c8d; margin-bottom: 2rem;">
+            Enter the admin passcode to gain full access and moderation powers!
+        </p>
+        
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+            <div class="errors">
+                <ul>
+                    <% errors.forEach(error => { %>
+                        <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+        
+        <form action="/become-admin" method="POST">
+            <div class="form-group">
+                <label for="secretCode">Admin Passcode</label>
+                <input type="password" name="secretCode" id="secretCode" placeholder="Enter the admin code" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary form-submit">Become Admin</button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 1.5rem;">
+            <a href="/" style="color: #667eea;">← Back to home</a>
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join the Club </title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1>🔐 Join the Club</h1>
+        <p style="text-align: center; color: #7f8c8d; margin-bottom: 2rem;">
+            Enter the secret passcode to become a member and see who writes each message!
+        </p>
+        
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+            <div class="errors">
+                <ul>
+                    <% errors.forEach(error => { %>
+                        <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+        
+        <form action="/join-club" method="POST">
+            <div class="form-group">
+                <label for="secretCode">Secret Passcode</label>
+                <input type="text" name="secretCode" id="secretCode" placeholder="Enter the secret code" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary form-submit">Join Club</button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 1.5rem;">
+            <a href="/" style="color: #667eea;">← Back to home</a>
+        </p>
+    </div>
+</body>
+</html>
