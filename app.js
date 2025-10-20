@@ -44,6 +44,20 @@ app.get('/', async (req, res) => {
   }
 });
 
+// Temporary setup route - REMOVE AFTER USE
+app.get('/setup-db', async (req, res) => {
+  const fs = require('fs');
+  const path = require('path');
+  
+  try {
+    const schema = fs.readFileSync(path.join(__dirname, 'db/schema.sql'), 'utf8');
+    await pool.query(schema);
+    res.send('✅ Database tables created successfully! Now remove this route from app.js and redeploy.');
+  } catch (error) {
+    res.status(500).send('❌ Error: ' + error.message);
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
